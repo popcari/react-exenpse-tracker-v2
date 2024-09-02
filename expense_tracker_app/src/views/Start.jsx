@@ -12,7 +12,7 @@ export default function Start() {
 	const user = useSelector((state) => state.user.user)
 
 	const [isReady, setIsReady] = useState(false)
-	const startTitle = "Your expense tracker"
+	const startTitle = "Expensify"
 	const inputRef = useRef(null)
 
 	function onStartBtnClick() {
@@ -38,10 +38,10 @@ export default function Start() {
 
 	return (
 		<div id='start' className='flex justify-center items-center relative'>
-			<div className='form__container rounded-xl shadow-xl bg-white mobile:w-[400px] tablet:w-[600px] laptop:w-[700px] mobile:p-5 tablet:p-6'>
+			<div className='form__container rounded-xl shadow-xl bg-white mobile:w-[400px] tablet:w-[600px] laptop:w-[700px] mobile:p-5 tablet:p-6 w-[340px]'>
 				<form className='mobile:mb-4 tablet:mb-6 p-4'>
 					<div className='title p-4 flex flex-col gap-2 items-center mobile:mb-5 tablet:mb-8'>
-						<img src='/img/expensify.png' className='w-20' alt='' />
+						<img src='/img/expensify.svg' className='w-20' alt='' />
 						<p className='text-2xl font-semibold'>{startTitle}</p>
 					</div>
 					<input
@@ -73,7 +73,7 @@ export default function Start() {
 				<div className='p-4 w-full h-full flex flex-col items-center justify-center'>
 					<p className='text-3xl leading-5 mb-4'>
 						{`Hello `}
-						<span className='text-[#FF8225]'>{user}</span>
+						<span className='text-[#FF8225] font-semibold'>{user}</span>
 					</p>
 					<p className='text-md' onClick={handleStartApp}>
 						<button className='submit-btn w-full p-3 text-xl transition-all duration-300 hover:opacity-90'>

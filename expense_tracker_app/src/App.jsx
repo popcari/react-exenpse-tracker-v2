@@ -5,6 +5,9 @@ import Home from "./views/Home"
 import Transaction from "./views/Transaction"
 import Report from "./views/Report"
 
+// layout
+import Footer from "./Layout/Footer"
+
 export default function App() {
 	return (
 		<div>
@@ -15,6 +18,7 @@ export default function App() {
 				<Route path='report' element={<Report />} />
 				{/* Thêm các route con khác tại đây nếu cần */}
 			</Routes>
+			<Footer />
 		</div>
 	)
 }

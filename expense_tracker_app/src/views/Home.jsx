@@ -3,18 +3,18 @@ import { useState, useEffect } from "react"
 import { CURRENCY } from "../constants/constant"
 
 export default function Home() {
-	const [hello, setHello] = useState("ff")
-
 	useEffect(() => {
 		setTimeout(() => {
-			setHello("dcmm")
+			// setHello("dcmm")
 		}, 2000)
 	}, [])
 
 	return (
 		<>
-			<div>{hello}</div>
-			<div>{CURRENCY}</div>
+			<div
+				id='home'
+				className='home overflow-x-hidden w-screen h-screen bg-[#FFD18E]'
+			></div>
 		</>
 	)
 }

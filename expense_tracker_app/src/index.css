@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-
+:root {
+	--main-color: #FFB22C;
+}
 
 #start {
 	background: linear-gradient(45deg, #F3FEB8, #FFDE4D);
@@ -30,6 +32,9 @@
 	}
 }
 
+.main-color {
+	color: #FFB22C;
+}
 
 .submit-btn {
 	width: 100%;
@@ -42,4 +47,8 @@
 	font-weight: 500;
 	border-radius: 12px;
 	color: white
+}
+
+.main_gradient_tab {
+	background: linear-gradient(0.6turn, #ffb22c7d, #ffb22c);
 }

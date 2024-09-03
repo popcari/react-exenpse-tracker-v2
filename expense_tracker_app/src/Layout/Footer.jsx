@@ -7,7 +7,7 @@ export default function Footer() {
 	const applyColor = (route, type) => {
 		if (type === "route") {
 			return location.pathname === route
-				? "text-[#FFB22C] font-semibold"
+				? "main-color font-semibold"
 				: "text-[#c4c4c4]"
 		} else {
 			return location.pathname === route ? "#FFB22C" : "#c4c4c4"

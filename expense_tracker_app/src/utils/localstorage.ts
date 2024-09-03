@@ -9,7 +9,7 @@
  * @returns
  */
 export const LOCALDATA = (
-	name: "user",
+	name: "user" | "transactions",
 	value?: string | null | undefined,
 	isRemove?: boolean,
 ) => {

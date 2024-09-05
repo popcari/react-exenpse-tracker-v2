@@ -1,9 +1,21 @@
 // import { useEffect } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
+import { useSelector, useDispatch } from "react-redux"
+
+import ModalTransactionForm from "../components/ModalTransactionForm"
+import { toggleModalForm } from "../features/modal/modalSlice"
+
+// components
 
 export default function Footer() {
 	const location = useLocation()
 	const navigate = useNavigate()
+	const dispatch = useDispatch()
+
+	const { isFormShow } = useSelector((state) => ({
+		isFormShow: state.modal.isFormShow,
+	}))
+
 	const applyColor = (route, type) => {
 		if (type === "route") {
 			return location.pathname === route
@@ -17,6 +29,10 @@ export default function Footer() {
 	const handleChangeRoute = (route) => {
 		if (!route) return
 		navigate(route)
+	}
+
+	const onAddTransactionBtnClick = () => {
+		dispatch(toggleModalForm(true))
 	}
 
 	return (
@@ -105,6 +121,7 @@ export default function Footer() {
 						viewBox='0 0 24 24'
 						fill='none'
 						xmlns='http://www.w3.org/2000/svg'
+						onClick={onAddTransactionBtnClick}
 					>
 						<g id='SVGRepo_bgCarrier' strokeWidth='0'></g>
 						<g
@@ -200,6 +217,7 @@ export default function Footer() {
 					</div>
 				</div>
 			</div>
+			{isFormShow && <ModalTransactionForm />}
 		</div>
 	)
 }

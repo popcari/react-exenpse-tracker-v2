@@ -66,7 +66,7 @@ export default function Home() {
 				className='home overflow-x-hidden w-screen h-screen bg-slate-100 scroll-smooth'
 			>
 				<section className='balance w-full mt-6'>
-					<div className='balance__container main_gradient_tab transition-all duration-200 mx-auto p-4 tablet:p-5 rounded-xl w-[360px] tablet:w-[560px] bg-slate-100 backdrop-blur-2xl shadow-xl text-center flex flex-col gap-4'>
+					<div className='balance__container main_gradient_tab transition-all duration-200 mx-auto p-4 tablet:p-5 rounded-xl w-[360px] tablet:w-[560px] bg-slate-100 text-center flex flex-col gap-4'>
 						<p className='text-2xl font-normal text-[#e9e9e9] flex justify-center items-center gap-2'>
 							Total balance{" "}
 							<span onClick={handleToggleBalace}>
@@ -91,7 +91,7 @@ export default function Home() {
 				</section>
 
 				<section className='transaction w-full mt-6'>
-					<div className='balance__container transition-all duration-200 mx-auto p-4 tablet:p-5 rounded-xl w-[360px] tablet:w-[560px] backdrop-blur-2xl shadow-lg text-center flex gap-2'>
+					<div className='balance__container transition-all duration-200 mx-auto p-4 tablet:p-5 rounded-xl w-[360px] tablet:w-[560px] shadow-lg text-center flex gap-2'>
 						{transactionTypeTabs.map((transaction) => (
 							<div
 								key={transaction.type}

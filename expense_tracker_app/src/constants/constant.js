@@ -1,6 +1,10 @@
 const CURRENCY = "VND"
 const CATEGORY = [
 	{
+		name: "salary",
+		logo: "/img/category/salary.png",
+	},
+	{
 		name: "foods",
 		logo: "/img/category/food.png",
 	},
@@ -27,10 +31,6 @@ const CATEGORY = [
 	{
 		name: "unknown",
 		logo: "/img/category/unknown.png",
-	},
-	{
-		name: "salary",
-		logo: "/img/category/salary.png",
 	},
 ]
 

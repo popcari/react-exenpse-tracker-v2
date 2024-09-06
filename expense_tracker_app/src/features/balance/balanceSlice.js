@@ -46,13 +46,34 @@ export const balanceSlice = createSlice({
 		calculateBalances: (state) => {
 			state.transactionsList.forEach((transaction) => {
 				if (transaction.type === "income") {
-					state.income += transaction.amount
+					state.income += Number(transaction.amount)
 				} else if (transaction.type === "outcome") {
-					state.outcome += transaction.amount
+					state.outcome += Number(transaction.amount)
 				}
 			})
 
 			state.totalBalance = state.income - state.outcome
+		},
+
+		/**
+		 * sort DESC/ASC order
+		 * @param {Object} state balance slice's states
+		 * @param {String} action sort type
+		 */
+		sortTransactions: (state, action) => {
+			const { sortBy } = action.payload
+
+			state.transactionsList.sort((a, b) => {
+				const dateA = a.created_at.split("-").reverse().join("-")
+				const dateB = b.created_at.split("-").reverse().join("-")
+
+				if (sortBy === "latest") {
+					return new Date(dateB) - new Date(dateA) // Latest first
+				} else if (sortBy === "oldest") {
+					return new Date(dateA) - new Date(dateB) // Oldest first
+				}
+				return 0 // Default case
+			})
 		},
 	},
 	extraReducers: (builder) => {
@@ -70,6 +91,14 @@ export const balanceSlice = createSlice({
 						logo: category ? category.logo : "/img/category/unknown.png",
 					}
 				})
+
+				// Sort transactions by the created_at field (assuming it's in "dd-mm-yyyy" format)
+				state.transactionsList.sort((a, b) => {
+					const dateA = a.created_at.split("-").reverse().join("-")
+					const dateB = b.created_at.split("-").reverse().join("-")
+					return new Date(dateB) - new Date(dateA) // Sorting in descending order (latest first)
+				})
+
 				// Reset income, outcome, and totalBalance
 				state.income = 0
 				state.outcome = 0
@@ -78,9 +107,9 @@ export const balanceSlice = createSlice({
 				// Recalculate income and outcome
 				state.transactionsList.forEach((transaction) => {
 					if (transaction.type === "income") {
-						state.income += transaction.amount
+						state.income += Number(transaction.amount)
 					} else if (transaction.type === "outcome") {
-						state.outcome += transaction.amount
+						state.outcome += Number(transaction.amount)
 					}
 				})
 
@@ -106,11 +135,11 @@ export const balanceSlice = createSlice({
 
 				// Update income, outcome, and totalBalance incrementally
 				if (newTransaction.type === "income") {
-					state.income += newTransaction.amount
-					state.totalBalance += newTransaction.amount
+					state.income += Number(newTransaction.amount)
+					state.totalBalance += Number(newTransaction.amount)
 				} else if (newTransaction.type === "outcome") {
-					state.outcome += newTransaction.amount
-					state.totalBalance -= newTransaction.amount
+					state.outcome += Number(newTransaction.amount)
+					state.totalBalance -= Number(newTransaction.amount)
 				}
 			})
 	},

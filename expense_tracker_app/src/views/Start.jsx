@@ -56,7 +56,7 @@ export default function Start() {
 
 				<div className='submit h-10 m-4' onClick={onStartBtnClick}>
 					<button
-						className={`submit-btn uppercase transition-all delay-150 duration-200 ${!user || (isReady && "opacity-40")}`}
+						className={`submit-btn full_center-btn h-full uppercase transition-all delay-150 duration-200 ${!user || (isReady && "opacity-40")}`}
 					>
 						Start
 					</button>
@@ -76,7 +76,7 @@ export default function Start() {
 						<span className='text-[#FF8225] font-semibold'>{user}</span>
 					</p>
 					<p className='text-md' onClick={handleStartApp}>
-						<button className='submit-btn w-full p-3 text-xl transition-all duration-300 hover:opacity-90'>
+						<button className='submit-btn full_center-btn w-full p-3 text-xl transition-all duration-300 hover:opacity-90'>
 							Let get started
 						</button>
 					</p>

@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux"
 import { CURRENCY } from "../constants/constant"
 import { fetchTransactions } from "../features/balance/balanceSlice"
 import { formatNumberWithDots } from "../utils/number"
-import { formatDate } from "../utils/date"
 
 export default function Home() {
 	const dispatch = useDispatch()
@@ -130,17 +129,14 @@ export default function Home() {
 											<p className='text-[18px] uppercase font-semibold'>
 												{transaction.category}
 											</p>
-											<p className='text-[12px]'>
-												{" "}
-												{formatDate(transaction.created_at)}
-											</p>
+											<p className='text-[12px]'> {transaction.created_at}</p>
 										</div>
 									</div>
 									<div className='right flex items-center'>
 										<p
 											className={`text-xl tablet:text-3xl font-semibold ${transaction.type === "income" ? "text-green-500" : "text-red-500"}`}
 										>
-											{formatNumberWithDots(transaction.amount)}
+											{`${transaction.type === "income" ? "+" : "-"}${formatNumberWithDots(Number(transaction.amount))}`}
 										</p>
 									</div>
 								</div>

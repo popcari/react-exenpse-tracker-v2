@@ -6,7 +6,10 @@ import { useDispatch } from "react-redux"
 // internal libraries
 import { CATEGORY } from "../constants/constant"
 
-import { addTransaction } from "../features/balance/balanceSlice"
+import {
+	addTransaction,
+	fetchTransactions,
+} from "../features/balance/balanceSlice"
 import { toggleModalForm } from "../features/modal/modalSlice"
 
 export default function ModalTransactionForm() {
@@ -34,7 +37,8 @@ export default function ModalTransactionForm() {
 		type: "income",
 		category: "unknown",
 		amount: 0,
-		time: `${day}-${month}-${year}`,
+		created_at: `${day}-${month}-${year}`,
+		note: "",
 	}
 
 	const [formData, setFormData] = useState(initData)
@@ -43,11 +47,11 @@ export default function ModalTransactionForm() {
 	const [selectedYear, setSelectedYear] = useState(year)
 
 	useEffect(() => {
-		const [day, month, year] = formData.time.split("-")
+		const [day, month, year] = formData.created_at.split("-")
 		setSelectedDay(day)
 		setSelectedMonth(month)
 		setSelectedYear(year)
-	}, [formData.time])
+	}, [formData.created_at])
 
 	const handleTypeToggle = (type) => {
 		setFormData((prev) => ({ ...prev, type }))
@@ -66,9 +70,14 @@ export default function ModalTransactionForm() {
 		if (selectedDay && selectedMonth && selectedYear) {
 			setFormData((prev) => ({
 				...prev,
-				time: `${selectedDay}-${selectedMonth}-${selectedYear}`,
+				created_at: `${selectedDay}-${selectedMonth}-${selectedYear}`,
 			}))
 		}
+	}
+
+	const handleInputNote = (e) => {
+		const { name, value } = e.target
+		setFormData((prev) => ({ ...prev, [name]: value }))
 	}
 
 	// Type Toggle Component
@@ -202,20 +211,36 @@ export default function ModalTransactionForm() {
 		</div>
 	)
 
+	const renderNote = () => {
+		return (
+			<div className='input-field mb-4 flex flex-col gap-1'>
+				<label className='text-xs sub-title-color'>Note:</label>
+				<input
+					type='text'
+					name='note'
+					value={formData.note}
+					onChange={handleInputNote}
+					className='border p-2 w-full'
+				/>
+			</div>
+		)
+	}
+
 	const handleConfirmClick = () => {
 		// validate amount
 		if (Number(formData.amount) == 0) return
 
-		console.warn(JSON.stringify(formData, null, 2)) // This will display formData in an alert box.
-
+		dispatch(addTransaction(formData))
+		dispatch(fetchTransactions())
 		setTimeout(() => {
 			onCancel()
-		}, 500)
+		}, 300)
 	}
 
 	const onResetFormData = () => {
 		setFormData(initData)
 	}
+
 	const onCancel = () => {
 		try {
 			onResetFormData()
@@ -245,6 +270,7 @@ export default function ModalTransactionForm() {
 						{renderAmount()}
 						{renderDatePicker()}
 						{renderCategoryPicker()}
+						{renderNote()}
 					</div>
 					<div className='modal-footer mr-2 float-left h-[8%]'>
 						<div className='button-group flex gap-4 h-full items-center justify-end'>

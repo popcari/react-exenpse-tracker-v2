@@ -75,8 +75,8 @@
 
 .cancel-btn {
 	background-color: white;
-	color: #FFB22C;
-	border: 1px solid #FFB22C;
+	color: var(--outcome-color);
+	border: 1px solid var(--outcome-color);
 }
 
 .cancel-btn:hover {

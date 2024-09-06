@@ -116,6 +116,7 @@ export default function Footer() {
 				</div>
 				<div className='middle w-1/5 h-full flex items-center justify-center'>
 					<svg
+						className='hover:scale-110 transition-all duration-200 cursor-pointer'
 						width='56px'
 						height='56px'
 						viewBox='0 0 24 24'

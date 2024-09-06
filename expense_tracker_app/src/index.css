@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 :root {
-	--main-color: #FFB22C;
+	--main-color: #ffb22c;
 	--sub-title-color: #aaaaaa;
 	--income-color: #04bc04;
 	--outcome-color: #c32f18;
 }
 
 #start {
-	background: linear-gradient(45deg, #F3FEB8, #FFDE4D);
+	background: linear-gradient(45deg, #f3feb8, #ffde4d);
 	width: 100svw;
 	height: 100svh;
 }
@@ -36,7 +36,7 @@
 }
 
 .main-color {
-	color: #FFB22C;
+	color: #ffb22c;
 }
 
 .income-bg {
@@ -65,8 +65,8 @@
 }
 
 .submit-btn {
-	background-color: #FFB22C;
-	color: white
+	background-color: #ffb22c;
+	color: white;
 }
 
 .submit-btn:hover {
@@ -96,10 +96,7 @@
 	border-color: #585858;
 	color: white;
 	transition: cubic-bezier(0.165, 0.84, 0.44, 1);
-
 }
-
-
 
 .main_gradient_tab {
 	background: linear-gradient(0.6turn, #ffb22c7d, #ffb22c);
@@ -110,7 +107,10 @@
 }
 
 .tab-item {
-	transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+	transition:
+		background-color 0.3s ease,
+		color 0.3s ease,
+		transform 0.3s ease;
 }
 
 .active-tab {
@@ -128,7 +128,6 @@
 
 .active-tab:hover {
 	transform: scale(1.2);
-
 }
 
 .modal__form input {

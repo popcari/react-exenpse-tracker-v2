@@ -36,6 +36,9 @@ const initialState = {
 	income: 0,
 	outcome: 0,
 	transactionsList: [],
+	paginatedTransactions: [],
+	currentPage: 1,
+	itemsPerPage: 10, // Items per page for pagination
 	error: null, // to track any errors
 }
 
@@ -74,6 +77,41 @@ export const balanceSlice = createSlice({
 				}
 				return 0 // Default case
 			})
+		},
+
+		/**
+		 * Change the new page
+		 * @param {Object} state balance slice's states
+		 * @param {Number} action sort type
+		 */
+		setCurrentPage: (state, action) => {
+			state.currentPage = action.payload
+			// Recalculate paginated transactions whenever the page changes
+			const indexOfLastItem = state.currentPage * state.itemsPerPage
+			const indexOfFirstItem = indexOfLastItem - state.itemsPerPage
+
+			state.paginatedTransactions = state.transactionsList.slice(
+				indexOfFirstItem,
+				indexOfLastItem,
+			)
+		},
+
+		/**
+		 * Change item per page (use later)
+		 * @param {*} state balance slice's states
+		 * @param {*} action
+		 */
+		setItemsPerPage: (state, action) => {
+			state.itemsPerPage = action.payload
+			// Reset pagination when items per page changes
+			state.currentPage = 1
+			const indexOfLastItem = state.currentPage * state.itemsPerPage
+			const indexOfFirstItem = indexOfLastItem - state.itemsPerPage
+
+			state.paginatedTransactions = state.transactionsList.slice(
+				indexOfFirstItem,
+				indexOfLastItem,
+			)
 		},
 	},
 	extraReducers: (builder) => {
@@ -115,6 +153,14 @@ export const balanceSlice = createSlice({
 
 				// Calculate totalBalance directly from income and outcome
 				state.totalBalance = state.income - state.outcome
+
+				// Calculate initial paginated transactions
+				const indexOfLastItem = state.currentPage * state.itemsPerPage
+				const indexOfFirstItem = indexOfLastItem - state.itemsPerPage
+				state.paginatedTransactions = state.transactionsList.slice(
+					indexOfFirstItem,
+					indexOfLastItem,
+				)
 			})
 			.addCase(fetchTransactions.rejected, (state, action) => {
 				state.error = action.error.message
@@ -145,6 +191,7 @@ export const balanceSlice = createSlice({
 	},
 })
 // Action creators are generated for each case reducer function
-export const { calculateBalances } = balanceSlice.actions
+export const { calculateBalances, setCurrentPage, setItemsPerPage } =
+	balanceSlice.actions
 
 export default balanceSlice.reducer

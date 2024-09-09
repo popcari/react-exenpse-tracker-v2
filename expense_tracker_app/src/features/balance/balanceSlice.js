@@ -50,6 +50,32 @@ export const editTransaction = createAsyncThunk(
 	},
 )
 
+export const deleteTransaction = createAsyncThunk(
+	"balance/deleteTransaction",
+	async (transaction) => {
+		console.log(transaction)
+
+		try {
+			const currentTransactions = JSON.parse(LOCALDATA("transactions") || "[]")
+			const transctionId = transaction._id
+
+			// replace existing transaction with edited transaction
+			const existingTransactions = currentTransactions.find(
+				(item) => item._id === transctionId,
+			)
+
+			// remove existing transaction
+			const index = currentTransactions.indexOf(existingTransactions)
+			if (index > -1) {
+				currentTransactions.splice(index, 1)
+				LOCALDATA("transactions", JSON.stringify(currentTransactions))
+			}
+		} catch (error) {
+			throw new Error("Failed to edit transaction", error)
+		}
+	},
+)
+
 const initialState = {
 	totalBalance: 0,
 	income: 0,

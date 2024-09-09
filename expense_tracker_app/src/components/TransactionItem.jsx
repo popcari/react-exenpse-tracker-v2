@@ -9,6 +9,10 @@ import {
 	setTransactionItemData,
 } from "../features/modal/modalSlice"
 import { setModalTitle } from "../features/modal/modalSlice"
+import {
+	deleteTransaction,
+	fetchTransactions,
+} from "../features/balance/balanceSlice"
 
 TransactionItem.propTypes = {
 	transaction: PropTypes.object,
@@ -23,7 +27,10 @@ export default function TransactionItem({ transaction }) {
 		dispatch(setTransactionItemData(transaction))
 		dispatch(toggleModalForm(true))
 	}
-	const handleDeleteTransactionItem = () => {}
+	const handleDeleteTransactionItem = () => {
+		dispatch(deleteTransaction(transaction))
+		dispatch(fetchTransactions())
+	}
 
 	return (
 		<div

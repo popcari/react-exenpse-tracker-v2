@@ -2,18 +2,26 @@
 import { useState, useEffect } from "react"
 
 // external libraries
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { v4 as uuidv4 } from "uuid"
 // internal libraries
 import { CATEGORY } from "../constants/constant"
 
 import {
 	addTransaction,
 	fetchTransactions,
+	editTransaction,
 } from "../features/balance/balanceSlice"
-import { toggleModalForm } from "../features/modal/modalSlice"
+import {
+	resetTransactionItemData,
+	toggleModalForm,
+} from "../features/modal/modalSlice"
 
 export default function ModalTransactionForm() {
 	const dispatch = useDispatch()
+	const { transactionItemData, isFormShow, modalTitle } = useSelector(
+		(state) => state.modal,
+	)
 
 	// Function to get the current date in dd-mm-yyyy format
 	const getCurrentDate = (day = null, month = null, year = null) => {
@@ -39,6 +47,7 @@ export default function ModalTransactionForm() {
 		amount: 0,
 		created_at: `${day}-${month}-${year}`,
 		note: "",
+		_id: "",
 	}
 
 	const [formData, setFormData] = useState(initData)
@@ -52,6 +61,32 @@ export default function ModalTransactionForm() {
 		setSelectedMonth(month)
 		setSelectedYear(year)
 	}, [formData.created_at])
+
+	useEffect(() => {
+		if (!transactionItemData) {
+			console.log("dcmm chua co gi")
+		} else {
+			// Re-assign fields in form
+			handleTypeToggle(transactionItemData.type) // toggle type
+			handleCategoryClick(transactionItemData.category) // category
+
+			const existingItemDate = transactionItemData.created_at.split("-") // date
+			setSelectedDay(existingItemDate[0])
+			setSelectedMonth(existingItemDate[1])
+			setSelectedYear(existingItemDate[2])
+
+			// Update formData with amount and note, then dispatch action
+			setFormData((prev) => ({
+				...prev,
+				amount: Number(transactionItemData.amount),
+				note: transactionItemData.note,
+			}))
+		}
+	}, [transactionItemData])
+
+	useEffect(() => {
+		if (!isFormShow) dispatch(resetTransactionItemData())
+	}, [isFormShow])
 
 	const handleTypeToggle = (type) => {
 		setFormData((prev) => ({ ...prev, type }))
@@ -73,11 +108,6 @@ export default function ModalTransactionForm() {
 				created_at: `${selectedDay}-${selectedMonth}-${selectedYear}`,
 			}))
 		}
-	}
-
-	const handleInputNote = (e) => {
-		const { name, value } = e.target
-		setFormData((prev) => ({ ...prev, [name]: value }))
 	}
 
 	// Type Toggle Component
@@ -153,7 +183,7 @@ export default function ModalTransactionForm() {
 	// Date Picker Component
 	const renderDatePicker = () => (
 		<div className='date-picker mb-4 flex flex-col gap-1'>
-			<label className='text-xs sub-title-color'>Category:</label>
+			<label className='text-xs sub-title-color'>Date:</label>
 
 			<div className=' flex gap-2'>
 				<div className='select-day'>
@@ -219,7 +249,7 @@ export default function ModalTransactionForm() {
 					type='text'
 					name='note'
 					value={formData.note}
-					onChange={handleInputNote}
+					onChange={handleInputChange}
 					className='border p-2 w-full'
 				/>
 			</div>
@@ -230,11 +260,27 @@ export default function ModalTransactionForm() {
 		// validate amount
 		if (Number(formData.amount) == 0) return
 
-		dispatch(addTransaction(formData))
-		dispatch(fetchTransactions())
-		setTimeout(() => {
-			onCancel()
-		}, 300)
+		try {
+			if (transactionItemData) {
+				// edit transaction
+				const clone = Object.assign({}, formData)
+				clone._id = transactionItemData._id
+				dispatch(editTransaction(clone)) // Dispatch after setting formData
+			} else {
+				// create new transaction
+				const clone = Object.assign({}, formData)
+				clone._id = uuidv4().toString()
+				dispatch(addTransaction(clone)) // Dispatch after setting formData
+			}
+			// re-fetch transactions list from database
+			dispatch(fetchTransactions())
+		} catch (e) {
+			console.error(e)
+		} finally {
+			setTimeout(() => {
+				onCancel()
+			}, 300)
+		}
 	}
 
 	const onResetFormData = () => {
@@ -246,6 +292,7 @@ export default function ModalTransactionForm() {
 			onResetFormData()
 			setTimeout(() => {
 				dispatch(toggleModalForm(false))
+				dispatch(resetTransactionItemData())
 			}, 500)
 		} catch (e) {
 			console.log(e)
@@ -257,7 +304,7 @@ export default function ModalTransactionForm() {
 			<div className='modal-container w-full h-full px-5 tablet:px-10 flex items-center justify-center'>
 				<div className='transaction-form rounded-xl p-4 bg-white w-full flex flex-col justify-between'>
 					<div className='modal-header mx-2 h-[8%] border-b flex justify-between items-center'>
-						<p className='text-[20px]'>Add transaction</p>
+						<p className='text-[20px]'>{modalTitle}</p>
 						<img
 							src='/img/close.png'
 							alt=''

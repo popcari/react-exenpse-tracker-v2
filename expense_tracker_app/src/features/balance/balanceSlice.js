@@ -31,6 +31,25 @@ export const addTransaction = createAsyncThunk(
 	},
 )
 
+export const editTransaction = createAsyncThunk(
+	"balance/editTransaction",
+	async (transaction) => {
+		try {
+			const currentTransactions = JSON.parse(LOCALDATA("transactions") || "[]")
+			const transctionId = transaction._id
+
+			// replace existing transaction with edited transaction
+			const newTransactionsList = currentTransactions.map((item) =>
+				item._id !== transctionId ? item : transaction,
+			)
+
+			LOCALDATA("transactions", JSON.stringify(newTransactionsList))
+		} catch (error) {
+			throw new Error("Failed to edit transaction", error)
+		}
+	},
+)
+
 const initialState = {
 	totalBalance: 0,
 	income: 0,
@@ -191,7 +210,11 @@ export const balanceSlice = createSlice({
 	},
 })
 // Action creators are generated for each case reducer function
-export const { calculateBalances, setCurrentPage, setItemsPerPage } =
-	balanceSlice.actions
+export const {
+	calculateBalances,
+	setCurrentPage,
+	setItemsPerPage,
+	editTransactionItem,
+} = balanceSlice.actions
 
 export default balanceSlice.reducer

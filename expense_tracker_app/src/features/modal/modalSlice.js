@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
 	isFormShow: false,
+	modaltitle: "",
+	transactionItemData: null,
 }
 
 export const modalSlice = createSlice({
@@ -11,10 +13,24 @@ export const modalSlice = createSlice({
 		toggleModalForm: (state, action) => {
 			state.isFormShow = action.payload
 		},
+		setTransactionItemData: (state, action) => {
+			state.transactionItemData = action.payload
+		},
+		resetTransactionItemData: (state, action) => {
+			state.transactionItemData = action.payload
+		},
+		setModalTitle: (state, action) => {
+			state.modalTitle = action.payload
+		},
 	},
 })
 
 // Action creators are generated for each case reducer function
-export const { toggleModalForm } = modalSlice.actions
+export const {
+	toggleModalForm,
+	setTransactionItemData,
+	resetTransactionItemData,
+	setModalTitle,
+} = modalSlice.actions
 
 export default modalSlice.reducer

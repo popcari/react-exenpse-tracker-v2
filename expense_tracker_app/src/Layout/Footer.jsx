@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
 import ModalTransactionForm from "../components/ModalTransactionForm"
-import { toggleModalForm } from "../features/modal/modalSlice"
+import { setModalTitle, toggleModalForm } from "../features/modal/modalSlice"
 
 // components
 
@@ -11,6 +11,8 @@ export default function Footer() {
 	const location = useLocation()
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
+
+	const MODAL_TITLE = "Add Transaction"
 
 	const { isFormShow } = useSelector((state) => ({
 		isFormShow: state.modal.isFormShow,
@@ -32,6 +34,7 @@ export default function Footer() {
 	}
 
 	const onAddTransactionBtnClick = () => {
+		dispatch(setModalTitle(MODAL_TITLE))
 		dispatch(toggleModalForm(true))
 	}
 

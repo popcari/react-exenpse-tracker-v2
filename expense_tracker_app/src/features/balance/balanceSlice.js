@@ -109,9 +109,10 @@ export const balanceSlice = createSlice({
 		 * @param {String} action sort type
 		 */
 		sortTransactions: (state, action) => {
-			const { sortBy } = action.payload
+			const sortBy = action.payload
 
-			state.transactionsList.sort((a, b) => {
+			// sort paginated list
+			state.paginatedTransactions.sort((a, b) => {
 				const dateA = a.created_at.split("-").reverse().join("-")
 				const dateB = b.created_at.split("-").reverse().join("-")
 
@@ -241,6 +242,7 @@ export const {
 	setCurrentPage,
 	setItemsPerPage,
 	editTransactionItem,
+	sortTransactions,
 } = balanceSlice.actions
 
 export default balanceSlice.reducer

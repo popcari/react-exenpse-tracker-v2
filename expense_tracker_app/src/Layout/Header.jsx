@@ -1,6 +1,6 @@
 export default function Header() {
 	return (
-		<section className='home__header transition-all duration-300 flex px-2 justify-between delay-100 w-full h-14 tablet:h-20'>
+		<section className='home__header transition-all duration-300 flex px-2 justify-between delay-100 w-full h-14 tablet:h-16'>
 			<div className='home__header--left p-2 flex gap-1 items-center'>
 				<img src='/img/expensify.svg' alt='' className='h-full' />
 				<div className='title flex flex-col justify-around h-full text-white'>

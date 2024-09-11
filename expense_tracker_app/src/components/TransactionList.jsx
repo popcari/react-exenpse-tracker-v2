@@ -1,9 +1,12 @@
 // standard libraries
+import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 // internal libraries
-import { setCurrentPage } from "../features/balance/balanceSlice"
-
+import {
+	setCurrentPage,
+	fetchTransactions,
+} from "../features/balance/balanceSlice"
 import TransactionItem from "./TransactionItem"
 
 export default function TransactionList() {
@@ -31,6 +34,13 @@ export default function TransactionList() {
 			dispatch(setCurrentPage(newPage))
 		}
 	}
+	/**
+	 * get transactions list
+	 */
+	useEffect(() => {
+		dispatch(fetchTransactions())
+		console.log("dcmm ----->")
+	}, [dispatch])
 
 	return (
 		<div className='list p-2 max-h-[900px] overflow-y-scroll scroll-smooth'>

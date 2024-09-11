@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from "react-redux"
 
 // internal libraries
 import { CURRENCY } from "../constants/constant"
-import { fetchTransactions } from "../features/balance/balanceSlice"
+import {
+	fetchTransactions,
+	setCurrentPage,
+} from "../features/balance/balanceSlice"
 import { formatNumberWithDots } from "../utils/number"
 import TransactionList from "../components/TransactionList"
 
@@ -48,6 +51,7 @@ export default function Home() {
 	 */
 	useEffect(() => {
 		dispatch(fetchTransactions())
+		dispatch(setCurrentPage(1))
 	}, [dispatch])
 
 	return (
@@ -56,8 +60,8 @@ export default function Home() {
 				id='home'
 				className='home overflow-x-hidden w-screen h-screen bg-slate-100 scroll-smooth'
 			>
-				<section className='balance w-full mt-6'>
-					<div className='balance__container main_gradient_tab transition-all duration-200 mx-auto p-4 tablet:p-5 rounded-xl w-[360px] tablet:w-[560px] bg-slate-100 text-center flex flex-col gap-4'>
+				<section className='balance w-full mt-6 px-4'>
+					<div className='balance__container main_gradient_tab transition-all duration-200 mx-auto p-4 tablet:p-5 rounded-xl w-full tablet:w-[560px] bg-slate-100 text-center flex flex-col gap-4'>
 						<p className='text-2xl font-normal text-[#e9e9e9] flex justify-center items-center gap-2'>
 							Total balance{" "}
 							<span onClick={handleToggleBalace}>
@@ -81,8 +85,8 @@ export default function Home() {
 					</div>
 				</section>
 
-				<section className='transaction w-full mt-6'>
-					<div className='balance__container transition-all duration-200 mx-auto p-4 tablet:p-5 rounded-xl w-[360px] tablet:w-[560px] shadow-lg text-center flex gap-2'>
+				<section className='transaction w-full mt-6 px-4'>
+					<div className='balance__container transition-all duration-200 mx-auto p-4 tablet:p-5 rounded-xl w-full tablet:w-[560px] shadow-lg text-center flex gap-2'>
 						{transactionTypeTabs.map((transaction) => (
 							<div
 								key={transaction.type}

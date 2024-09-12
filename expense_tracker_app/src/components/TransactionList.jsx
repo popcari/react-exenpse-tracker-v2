@@ -39,14 +39,25 @@ export default function TransactionList() {
 	 */
 	useEffect(() => {
 		dispatch(fetchTransactions())
-		console.log("dcmm ----->")
 	}, [dispatch])
 
 	return (
 		<div className='list p-2 max-h-[900px] overflow-y-scroll scroll-smooth'>
-			{paginatedTransactions.map((transaction, id) => (
-				<TransactionItem key={id} transaction={transaction} />
-			))}
+			{paginatedTransactions.length ? (
+				<>
+					{paginatedTransactions.map((transaction, id) => (
+						<TransactionItem key={id} transaction={transaction} />
+					))}
+				</>
+			) : (
+				<div className='empty__container flex flex-col pt-10 justify-center items-center'>
+					<img src='/img/empty.png' alt='' />
+					<p className='text-[12px] tablet:text-[16px] text-gray-400 font-light'>
+						No transactions
+					</p>
+				</div>
+			)}
+
 			{/* Pagination Controls */}
 			<div className='pagination mt-6 flex justify-center'>
 				<div

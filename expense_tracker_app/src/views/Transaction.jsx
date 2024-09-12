@@ -75,8 +75,8 @@ export default function Transaction() {
 						<img
 							src={
 								sortType === "latest"
-									? "/public/img/arrow-down.svg"
-									: "/public/img/arrow-up.svg"
+									? "/img/arrow-down.svg"
+									: "/img/arrow-up.svg"
 							}
 							alt=''
 							className='w-4 h-4'

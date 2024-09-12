@@ -4,24 +4,18 @@ import { useDispatch, useSelector } from "react-redux"
 
 // internal libraries
 import { CURRENCY } from "../constants/constant"
-import {
-	fetchTransactions,
-	setCurrentPage,
-} from "../features/balance/balanceSlice"
+import { setCurrentPage } from "../features/balance/balanceSlice"
 import { formatNumberWithDots } from "../utils/number"
 import TransactionList from "../components/TransactionList"
 
 export default function Home() {
 	const dispatch = useDispatch()
 
-	const { totalBalance, income, outcome, transactionsList } = useSelector(
-		(state) => ({
-			totalBalance: state.balance.totalBalance,
-			income: state.balance.income,
-			outcome: state.balance.outcome,
-			transactionsList: state.balance.transactionsList,
-		}),
-	)
+	const { totalBalance, income, outcome } = useSelector((state) => ({
+		totalBalance: state.balance.totalBalance,
+		income: state.balance.income,
+		outcome: state.balance.outcome,
+	}))
 
 	const [isShowBalance, setIsShowBalance] = useState(true)
 	const hiddenBalance = "**********"
@@ -50,7 +44,6 @@ export default function Home() {
 	 * get transactions list
 	 */
 	useEffect(() => {
-		dispatch(fetchTransactions())
 		dispatch(setCurrentPage(1))
 	}, [dispatch])
 
@@ -112,16 +105,7 @@ export default function Home() {
 					<h1 className='text-[#9BA1A8] text-[20px] tablet:text-[24px] px-2 leading-9 font-medium mb-2'>
 						Total transaction
 					</h1>
-					{transactionsList.length > 0 ? (
-						<TransactionList />
-					) : (
-						<div className='empty__container flex flex-col pt-10 justify-center items-center'>
-							<img src='/img/empty.png' alt='' />
-							<p className='text-[12px] tablet:text-[16px] text-gray-400 font-light'>
-								No transactions
-							</p>
-						</div>
-					)}
+					<TransactionList />
 				</section>
 			</div>
 		</>

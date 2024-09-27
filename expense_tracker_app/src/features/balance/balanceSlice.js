@@ -53,8 +53,6 @@ export const editTransaction = createAsyncThunk(
 export const deleteTransaction = createAsyncThunk(
 	"balance/deleteTransaction",
 	async (transaction) => {
-		console.log(transaction)
-
 		try {
 			const currentTransactions = JSON.parse(LOCALDATA("transactions") || "[]")
 			const transctionId = transaction._id
@@ -85,6 +83,9 @@ const initialState = {
 	currentPage: 1,
 	itemsPerPage: 10, // Items per page for pagination
 	error: null, // to track any errors
+	filteredTransactions: [],
+	filterIncome: 0,
+	filterOutcome: 0,
 }
 
 export const balanceSlice = createSlice({
@@ -158,6 +159,25 @@ export const balanceSlice = createSlice({
 				indexOfFirstItem,
 				indexOfLastItem,
 			)
+		},
+
+		setFilteredTransactions: (state, action) => {
+			state.filterIncome = 0
+			state.filterOutcome = 0
+
+			const filtered = state.transactionsList.filter((transaction) =>
+				transaction.created_at.includes(action.payload),
+			)
+
+			state.filteredTransactions = filtered
+
+			state.filteredTransactions.forEach((transaction) => {
+				if (transaction.type === "income") {
+					state.filterIncome += Number(transaction.amount)
+				} else if (transaction.type === "outcome") {
+					state.filterOutcome += Number(transaction.amount)
+				}
+			})
 		},
 	},
 	extraReducers: (builder) => {
@@ -243,6 +263,7 @@ export const {
 	setItemsPerPage,
 	editTransactionItem,
 	sortTransactions,
+	setFilteredTransactions,
 } = balanceSlice.actions
 
 export default balanceSlice.reducer

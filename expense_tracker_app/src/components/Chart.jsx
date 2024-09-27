@@ -1,63 +1,31 @@
-import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-
+// external libraries
 import { Doughnut } from "react-chartjs-2"
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
+import PropTypes from "prop-types"
 
-import {
-	setCurrentPage,
-	fetchTransactions,
-} from "../features/balance/balanceSlice"
+// internal libraries
+import { CURRENCY } from "../constants/constant"
+import { formatNumberWithDots } from "../utils/number"
 // Đăng ký các thành phần từ chart.js
 ChartJS.register(ArcElement, Tooltip, Legend)
 
-export default function DoughnutChart() {
-	const dispatch = useDispatch()
+DoughnutChart.propTypes = {
+	chartData: PropTypes.object,
+	chartTitle: PropTypes.string,
+}
 
-	const { transactionsList, currentPage, itemsPerPage, paginatedTransactions } =
-		useSelector((state) => ({
-			transactionsList: state.balance.transactionsList,
-			currentPage: state.balance.currentPage,
-			itemsPerPage: state.balance.itemsPerPage,
-			paginatedTransactions: state.balance.paginatedTransactions,
-		}))
-	const data = {
-		labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-		datasets: [
-			{
-				label: "# of Votes",
-				data: [12, 19, 3, 5, 2, 3],
-				backgroundColor: [
-					"rgba(255, 99, 132, 0.2)",
-					"rgba(54, 162, 235, 0.2)",
-					"rgba(255, 206, 86, 0.2)",
-					"rgba(75, 192, 192, 0.2)",
-					"rgba(153, 102, 255, 0.2)",
-					"rgba(255, 159, 64, 0.2)",
-				],
-				borderColor: [
-					"rgba(255, 99, 132, 1)",
-					"rgba(54, 162, 235, 1)",
-					"rgba(255, 206, 86, 1)",
-					"rgba(75, 192, 192, 1)",
-					"rgba(153, 102, 255, 1)",
-					"rgba(255, 159, 64, 1)",
-				],
-				borderWidth: 1,
-			},
-		],
-	}
-
+export default function DoughnutChart({ chartData, chartTitle }) {
+	// same option for every doughnut chart
 	const options = {
 		responsive: true, // Biểu đồ sẽ tự điều chỉnh kích thước theo màn hình
 		cutout: "40%", // Điều chỉnh độ lớn của phần rỗng ở giữa (giá trị % hoặc px)
 		plugins: {
 			legend: {
-				position: "top", // Đặt vị trí của chú giải, có thể là 'top', 'bottom', 'left', 'right'
+				position: "right",
 				labels: {
-					color: "#333", // Màu chữ của các nhãn chú giải
+					color: "#333",
 					font: {
-						size: 14, // Kích thước chữ
+						size: 12,
 					},
 				},
 			},
@@ -65,11 +33,41 @@ export default function DoughnutChart() {
 				enabled: true, // Bật hoặc tắt tooltip khi di chuột qua
 				callbacks: {
 					label: function (tooltipItem) {
-						return `${tooltipItem.label}: ${tooltipItem.raw} votes` // Tùy chỉnh hiển thị tooltip
+						// Tính phần trăm
+						const total = tooltipItem.chart.data.datasets[0].data.reduce(
+							(acc, val) => acc + val,
+							0,
+						)
+						const value = tooltipItem.raw
+						const percentage = ((value / total) * 100).toFixed(2) // Làm tròn phần trăm đến 2 chữ số thập phân
+
+						// Hiển thị giá trị và phần trăm
+						return `${tooltipItem.label}: ${formatNumberWithDots(value)} ${CURRENCY} (${percentage}%)`
 					},
 				},
+				padding: 10,
+				titleMarginBottom: 10,
+				bodyColor: "#ffffff",
+				usePointStyle: true,
+				titleAlign: "center",
 			},
 		},
+		interaction: {
+			mode: "index",
+		},
+		pieceLabel: {
+			mode: "value",
+		},
+		animation: {
+			animateScale: true,
+			animateRotate: true,
+		},
 	}
-	return <Doughnut data={data} options={options} />
+
+	return (
+		<div className='flex flex-col items-center w-[300px] tablet:w-[500px]'>
+			<p className='text-lg font-semibold italic'>{chartTitle ?? "dcmm"}</p>
+			<Doughnut data={chartData} options={options} />
+		</div>
+	)
 }

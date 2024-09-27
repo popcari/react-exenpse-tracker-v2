@@ -6,11 +6,11 @@ This is my project about money expense tracking
 
 # step to run 
 NPM:
-cd expense_tracker_app
-npm install
-npm run dev
+$ cd expense_tracker_app
+$ npm install
+% $npm run dev
 
 Yarn:
-cd expense_tracker_app
-yarn install
-yarn dev
+$ cd expense_tracker_app
+$ yarn install
+$ yarn dev

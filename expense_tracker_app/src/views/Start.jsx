@@ -36,6 +36,24 @@ export default function Start() {
 		inputRef.current.focus()
 	}, [isReady])
 
+	useEffect(() => {
+		const form = document.querySelector(".form__container")
+
+		// click on form handler
+		function handleClickForm(e) {
+			if (form && form.contains(e.target)) {
+				console.log("input form clicked")
+				inputRef.current.focus()
+			}
+		}
+
+		form?.addEventListener("click", handleClickForm)
+
+		return () => {
+			form?.removeEventListener("click", handleClickForm)
+		}
+	}, [])
+
 	return (
 		<div id='start' className='flex justify-center items-center relative'>
 			<div className='form__container rounded-xl shadow-xl bg-white mobile:w-[400px] tablet:w-[600px] laptop:w-[700px] mobile:p-5 tablet:p-6 w-[340px]'>

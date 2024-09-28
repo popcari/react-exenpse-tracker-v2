@@ -14,3 +14,6 @@ Yarn:
 $ cd expense_tracker_app
 $ yarn install
 $ yarn dev
+
+# DEMO
+expensify-chiju.vercel.app

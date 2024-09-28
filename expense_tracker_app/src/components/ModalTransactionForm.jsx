@@ -299,6 +299,23 @@ export default function ModalTransactionForm() {
 		}
 	}
 
+	useEffect(() => {
+		const modalForm = document.querySelector(".modal__form")
+		const formContainer = document.querySelector(".transaction-form")
+
+		const handleClickOutside = (e) => {
+			if (formContainer && !formContainer.contains(e.target)) {
+				dispatch(toggleModalForm(false))
+			}
+		}
+
+		modalForm.addEventListener("click", handleClickOutside)
+
+		return () => {
+			modalForm.removeEventListener("click", handleClickOutside) // Clean up the event listener
+		}
+	}, [])
+
 	return (
 		<div className='modal__form fixed h-screen top-0 bottom-0 right-0 left-0 bg-[#40404066] z-10'>
 			<div className='modal-container w-full h-full px-5 tablet:px-10 flex items-center justify-center'>

@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom"
 import Home from "./views/Home"
 import Transaction from "./views/Transaction"
 import Report from "./views/Report"
+import Profile from "./views/Profile"
 
 // layout
 import Header from "./Layout/Header"
@@ -18,6 +19,7 @@ export default function App() {
 				<Route path='home' element={<Home />} />
 				<Route path='transaction' element={<Transaction />} />
 				<Route path='report' element={<Report />} />
+				<Route path='profile' element={<Profile />} />
 				{/* Thêm các route con khác tại đây nếu cần */}
 			</Routes>
 			<Footer />

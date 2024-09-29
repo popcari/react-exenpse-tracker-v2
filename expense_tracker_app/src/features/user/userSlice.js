@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { LOCALDATA } from "../../utils/localstorage"
 
 const initialState = {
-	user: 0,
+	user: LOCALDATA("user"),
 }
 
 export const userSlice = createSlice({

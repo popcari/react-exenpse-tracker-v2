@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { v4 as uuidv4 } from "uuid"
 // internal libraries
 import { CATEGORY } from "../constants/constant"
+import { showToast } from "../utils/toast"
 
 import {
 	addTransaction,
@@ -258,7 +259,11 @@ export default function ModalTransactionForm() {
 
 	const handleConfirmClick = () => {
 		// validate amount
-		if (Number(formData.amount) == 0) return
+		if (Number(formData.amount) == 0) {
+			showToast("error", "Amount can't be zero")
+
+			return
+		}
 
 		try {
 			if (transactionItemData) {
@@ -266,16 +271,18 @@ export default function ModalTransactionForm() {
 				const clone = Object.assign({}, formData)
 				clone._id = transactionItemData._id
 				dispatch(editTransaction(clone)) // Dispatch after setting formData
+				showToast("success", "Edit transaction successfully!")
 			} else {
 				// create new transaction
 				const clone = Object.assign({}, formData)
 				clone._id = uuidv4().toString()
 				dispatch(addTransaction(clone)) // Dispatch after setting formData
+				showToast("success", "Add transaction successfully!")
 			}
 			// re-fetch transactions list from database
 			dispatch(fetchTransactions())
 		} catch (e) {
-			console.error(e)
+			showToast("error", e)
 		} finally {
 			setTimeout(() => {
 				onCancel()

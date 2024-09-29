@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { setUser } from "../features/user/userSlice"
 
 import { LOCALDATA } from "../utils/localstorage"
+import { showToast } from "../utils/toast"
 
 export default function Start() {
 	const navigate = useNavigate()
@@ -28,6 +29,7 @@ export default function Start() {
 	function handleStartApp() {
 		setTimeout(() => {
 			navigate("app/home")
+			showToast("success", "Let's go")
 		}, 500)
 	}
 
@@ -35,6 +37,24 @@ export default function Start() {
 		if (isReady) return
 		inputRef.current.focus()
 	}, [isReady])
+
+	useEffect(() => {
+		const form = document.querySelector(".form__container")
+
+		// click on form handler
+		function handleClickForm(e) {
+			if (form && form.contains(e.target)) {
+				console.log("input form clicked")
+				inputRef.current.focus()
+			}
+		}
+
+		form?.addEventListener("click", handleClickForm)
+
+		return () => {
+			form?.removeEventListener("click", handleClickForm)
+		}
+	}, [])
 
 	return (
 		<div id='start' className='flex justify-center items-center relative'>

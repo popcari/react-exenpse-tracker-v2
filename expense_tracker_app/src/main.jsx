@@ -6,6 +6,7 @@ import "./index.css"
 
 import { store } from "./store.js"
 import { Provider } from "react-redux"
+import { Toaster } from "react-hot-toast"
 
 import App from "./App"
 import Start from "./views/Start"
@@ -14,6 +15,7 @@ import NotFound from "./views/404.jsx"
 createRoot(document.getElementById("root")).render(
 	<StrictMode>
 		<Provider store={store}>
+			<Toaster />
 			<BrowserRouter>
 				<Routes>
 					<Route path='/' element={<Start />} />

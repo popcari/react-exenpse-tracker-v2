@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { setUser } from "../features/user/userSlice"
 
 import { LOCALDATA } from "../utils/localstorage"
+import { showToast } from "../utils/toast"
 
 export default function Start() {
 	const navigate = useNavigate()
@@ -28,6 +29,7 @@ export default function Start() {
 	function handleStartApp() {
 		setTimeout(() => {
 			navigate("app/home")
+			showToast("success", "Let's go")
 		}, 500)
 	}
 

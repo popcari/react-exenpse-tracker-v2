@@ -29,4 +29,4 @@ $ yarn dev
 
 # DEMO
 
-[expensify-chiju.vercel.app]()
+[expensify-chiju.vercel.app](https://expensify-chiju.vercel.app)
